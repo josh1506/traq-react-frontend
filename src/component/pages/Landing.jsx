@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 import img_one from '../assets/img/11000.jpg'
 import img_two from '../assets/img/9812.jpg'
@@ -7,21 +8,21 @@ import '../assets/css/pages/landing.css'
 function Landing(props) {
     return (
         <div>
-            <div>
-                <img src={img_one} alt="" height='200' />
+            <div className='content-right'>
+                <img src={img_one} alt="" className='dashboard-img' />
                 <div>
-                    <div>
+                    <div className='content-message'>
                         <h1>Traq</h1>
                         <p>
                             Manage and keep track your url's
                             now by signing up for Free
                         </p>
                     </div>
-                    <button>Login / Signup for Free</button>
+                    <Link to='/login' className='content-button'>Login/Signup for Free</Link>
                 </div>
             </div>
-            <div>
-                <img src={img_two} alt="" height='200' />
+            <div className='content-left'>
+                <img src={img_two} alt="" className='dashboard-img' />
                 <div>
                     <p>
                         Measure the success of your marketing
