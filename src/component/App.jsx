@@ -12,7 +12,7 @@ function App(props) {
     return (
         <div>
             <Nav />
-            <main>
+            <main className='main-container'>
                 <Switch>
                     <Route path='/login' component={Login} />
                     <Route path='/dashboard/:id' component={Details} />
