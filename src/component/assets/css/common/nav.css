@@ -3,14 +3,20 @@
     position: fixed;
     left: 0;
     cursor: pointer;
+    background-color: #fff;
+    padding-right: 10px;
+    border-end-end-radius: 35px;
 }
 
 .nav-container {
+    position: fixed;
     display: flex;
     height: 50px;
     margin-left: 75px;
+    width: 95vw;
     justify-content: flex-end;
     border-bottom: #B3C9FF 2px solid;
+    background-color: #fff;
 }
 
 .nav-login {
