@@ -52,14 +52,14 @@ function Dashboard(props) {
     return (
         <div className='dashboard-container'>
             <div className='dashbaord-status-container'>
-                <ul>
-                    <li>asd</li>
-                    <li>asd</li>
-                    <li>asd</li>
-                    <li>asd</li>
-                    <li>asd</li>
-                </ul>
-                <div>
+                <div className='dashboard-status-list'>
+                    <p>asd</p>
+                    <p>asd</p>
+                    <p>asd</p>
+                    <p>asd</p>
+                    <p>asd</p>
+                </div>
+                <div className='dashboard-chart'>
                     <AreaChart width={730} height={250} data={data}
                         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                         <defs>
