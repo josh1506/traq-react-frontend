@@ -1,0 +1,63 @@
+.dashboard-img {
+    height: 680px;
+}
+
+.content-right {
+    display: flex;
+}
+
+.content-right div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.content-message {
+    font-family: 'RocknRoll One', sans-serif;
+}
+
+.content-message h1 {
+    font-size: 70px;
+    letter-spacing: 15px;
+}
+
+.content-message p {
+    font-size: 40px;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.content-left {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.content-left div {
+    display: flex;
+    align-items: center;
+    font-family: 'RocknRoll One', sans-serif;
+    font-size: 40px;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.content-button {
+    font-family: 'RocknRoll One', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 25px;
+    background-color: #ABC4FF;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    margin-top: 50px;
+}
+
+
+/* Mobile */
+/* @media only screen and (max-width: 1024px) {
+    body {
+        background-color: lightblue;
+    }
+} */
