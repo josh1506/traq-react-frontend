@@ -16,7 +16,6 @@
     "react-facebook-login": "^4.1.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "react-use": "^17.2.3",
     "recharts": "^2.0.9",
     "web-vitals": "^1.1.1"
   },

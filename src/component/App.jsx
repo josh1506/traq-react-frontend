@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 
 import Dashboard from './pages/Dashboard';
 import Details from './pages/Details';
@@ -13,12 +14,19 @@ function App(props) {
         <div>
             <Nav />
             <main className='main-container'>
-                <Switch>
-                    <Route path='/login' component={Login} />
-                    <Route path='/dashboard/:id' component={Details} />
-                    <Route path='/dashboard' component={Dashboard} />
-                    <Route path='/' component={Landing} />
-                </Switch>
+
+                <Route
+                    render={({ location }) => (
+                        <AnimatePresence exitBeforeEnter>
+                            <Switch location={location} key={location.key}>
+                                <Route path='/login' component={Login} />
+                                <Route path='/dashboard/:id' component={Details} />
+                                <Route path='/dashboard' component={Dashboard} />
+                                <Route path='/' component={Landing} />
+                            </Switch>
+                        </AnimatePresence>
+                    )}
+                />
             </main>
         </div>
     );
