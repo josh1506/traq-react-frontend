@@ -10,7 +10,9 @@ function Nav(props) {
             <Link to='/'>
                 <img src={logo} alt="Traq_Logo" className='nav-logo' />
             </Link>
-            <button className='nav-login'>Login</button>
+            <Link to='/login' className='nav-button'>
+                Login/Signup
+            </Link>
         </nav>
     );
 }
