@@ -100,4 +100,14 @@
     .dashboard-chart {
         overflow: scroll;
     }
+
+    .dashboard-graph-container {
+        display: block;
+    }
+
+    .dashboard-button {
+        display: flex;
+        align-self: center;
+        justify-content: flex-end;
+    }
 }
