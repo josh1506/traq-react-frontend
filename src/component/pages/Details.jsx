@@ -1,7 +1,20 @@
 import React from 'react';
+import { motion } from 'framer-motion'
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area } from 'recharts'
 
 import '../assets/css/pages/dashboard.css'
+
+const animateTableContainer = {
+    hidden: { y: '10vh', opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 1 } },
+    exit: { opacity: 0 }
+}
+
+const animateSearchInput = {
+    hidden: { width: 0, opacity: 0 },
+    visible: { width: '60%', opacity: 1, transition: { delay: 1, duration: 1 } },
+    exit: { width: 0, opacity: 0 }
+}
 
 function Details(props) {
     const data = [
@@ -59,8 +72,10 @@ function Details(props) {
                     <p>Last Visited: </p>
                 </div>
                 <div className='dashboard-graph-container'>
-                    <button>Delete</button>
-                    <div className="dashboard-chart">
+                    <div className="dashboard-button">
+                        <button>Delete</button>
+                    </div>
+                    <div className='dashboard-chart'>
                         <AreaChart width={730} height={250} data={data}
                             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <defs>
@@ -83,8 +98,22 @@ function Details(props) {
                     </div>
                 </div>
             </div>
-            <input type="text" name="" id="" className='search-input' placeholder='Input Date or Month' />
-            <div className='dashboard-table-container'>
+            <motion.input
+                variants={animateSearchInput}
+                initial='hidden'
+                animate='visible'
+                exit='exit'
+                type="text"
+                className='search-input'
+                placeholder='Input Date or Month'
+            />
+            <motion.div
+                variants={animateTableContainer}
+                initial='hidden'
+                animate='visible'
+                exit='exit'
+                className='dashboard-table-container'
+            >
                 <table className='dashboard-table'>
                     <thead>
                         <tr>
@@ -106,7 +135,7 @@ function Details(props) {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </motion.div>
         </div>
     );
 }
