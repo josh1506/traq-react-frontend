@@ -1,7 +1,21 @@
 import React from 'react';
+import { motion } from 'framer-motion'
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area } from 'recharts'
 
+import CreateUrlModal from '../common/CreateUrlModal';
 import '../assets/css/pages/dashboard.css'
+
+const animateTableContainer = {
+    hidden: { y: '10vh', opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 1 } },
+    exit: { opacity: 0 }
+}
+
+const animateSearchInput = {
+    hidden: { width: 0, opacity: 0 },
+    visible: { width: '60%', opacity: 1, transition: { delay: 1, duration: 1 } },
+    exit: { width: 0, opacity: 0 }
+}
 
 function Dashboard(props) {
     const data = [
@@ -59,30 +73,50 @@ function Dashboard(props) {
                     <p>asd</p>
                     <p>asd</p>
                 </div>
-                <div className='dashboard-chart'>
-                    <AreaChart width={730} height={250} data={data}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                        <defs>
-                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#ff6b35" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#ff6b35" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-                            </linearGradient>
-                        </defs>
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <Tooltip />
-                        <Area type="monotone" dataKey="YouTube" stroke="#ff6b35" fillOpacity={1} fill="url(#colorUv)" />
-                        <Area type="monotone" dataKey="Facebook" stroke="#8884d8" fillOpacity={1} fill="url(#colorPv)" />
-                    </AreaChart>
+                <div className='dashboard-graph-container'>
+                    <div className="dashboard-button">
+                        <button>Create</button>
+                    </div>
+                    <div className='dashboard-chart'>
+                        <AreaChart width={730} height={250} data={data}
+                            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                            <defs>
+                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#ff6b35" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#ff6b35" stopOpacity={0} />
+                                </linearGradient>
+                                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <Tooltip />
+                            <Area type="monotone" dataKey="YouTube" stroke="#ff6b35" fillOpacity={1} fill="url(#colorUv)" />
+                            <Area type="monotone" dataKey="Facebook" stroke="#8884d8" fillOpacity={1} fill="url(#colorPv)" />
+                        </AreaChart>
+                    </div>
                 </div>
             </div>
-            <input type="text" name="" id="" className='search-input' placeholder='Input link title' />
-            <div className='dashboard-table-container'>
+            <motion.input
+                variants={animateSearchInput}
+                initial='hidden'
+                animate='visible'
+                exit='exit'
+                type="text"
+                name="" id=""
+                className='search-input'
+                placeholder='Input link title'
+            />
+            <motion.div
+                variants={animateTableContainer}
+                initial='hidden'
+                animate='visible'
+                exit='exit'
+                className='dashboard-table-container'
+            >
                 <table className='dashboard-table'>
                     <thead>
                         <tr>
@@ -107,7 +141,8 @@ function Dashboard(props) {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </motion.div>
+            <CreateUrlModal />
         </div>
     );
 }
