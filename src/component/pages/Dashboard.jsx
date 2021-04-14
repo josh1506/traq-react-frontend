@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area } from 'recharts'
 
 import CreateUrlModal from '../common/CreateUrlModal';
 import '../assets/css/pages/dashboard.css'
+import DeleteUrlModal from './../common/DeleteUrlModal';
 
 const animateTableContainer = {
     hidden: { y: '10vh', opacity: 0 },
@@ -17,7 +20,15 @@ const animateSearchInput = {
     exit: { width: 0, opacity: 0 }
 }
 
+const animateChartList = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { delay: 2, duration: 1 } },
+    exit: { opacity: 0 }
+}
+
 function Dashboard(props) {
+    const [showCreateModal, setShowCreateModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const data = [
         {
             "name": "Jan 1",
@@ -66,16 +77,27 @@ function Dashboard(props) {
     return (
         <div className='dashboard-container'>
             <div className='dashbaord-status-container'>
-                <div className='dashboard-status-list'>
-                    <p>asd</p>
-                    <p>asd</p>
-                    <p>asd</p>
-                    <p>asd</p>
-                    <p>asd</p>
-                </div>
+                <motion.div
+                    variants={animateChartList}
+                    initial='hidden'
+                    animate='visible'
+                    exit='exit'
+                    className='dashboard-status-list'
+                >
+                    <motion.p whileHover={{ scale: 1.2 }} style={{ cursor: 'default' }}>asd</motion.p>
+                    <motion.p whileHover={{ scale: 1.2 }} style={{ cursor: 'default' }}>asd</motion.p>
+                    <motion.p whileHover={{ scale: 1.2 }} style={{ cursor: 'default' }}>asd</motion.p>
+                    <motion.p whileHover={{ scale: 1.2 }} style={{ cursor: 'default' }}>asd</motion.p>
+                    <motion.p whileHover={{ scale: 1.2 }} style={{ cursor: 'default' }}>asd</motion.p>
+                </motion.div>
                 <div className='dashboard-graph-container'>
                     <div className="dashboard-button">
-                        <button>Create</button>
+                        <FontAwesomeIcon
+                            icon={faPlusCircle}
+                            size='lg'
+                            className='table-create-icon'
+                            onClick={() => setShowCreateModal(true)}
+                        />
                     </div>
                     <div className='dashboard-chart'>
                         <AreaChart width={730} height={250} data={data}
@@ -124,25 +146,33 @@ function Dashboard(props) {
                             <th>Link</th>
                             <th>Total Visitors</th>
                             <th>Last Viewed</th>
+                            <th style={{ minWidth: '15px' }}></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>ASD</td>
-                            <td>asd</td>
+                            <td>ASDASDASDASDASDASDASDASDASD</td>
+                            <td>asdasdasdasdasdasdasdasdasdasdasdasdasdasd</td>
                             <td>123</td>
                             <td>asd</td>
+                            <td>
+                                <FontAwesomeIcon icon={faTrashAlt} size='lg' className='table-delete-icon' onClick={() => setShowDeleteModal(true)} />
+                            </td>
                         </tr>
                         <tr>
                             <td>ASD</td>
                             <td>asd</td>
                             <td>123</td>
                             <td>asd</td>
+                            <td>
+                                <FontAwesomeIcon icon={faTrashAlt} size='lg' className='table-delete-icon' onClick={() => setShowDeleteModal(true)} />
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </motion.div>
-            <CreateUrlModal />
+            <CreateUrlModal showModal={showCreateModal} onChangeShowModal={setShowCreateModal} />
+            <DeleteUrlModal showModal={showDeleteModal} onChangeShowModal={setShowDeleteModal} />
         </div>
     );
 }
