@@ -8,6 +8,7 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Nav from './common/Nav';
 import './assets/css/app.css'
+import Footer from './common/Footer';
 
 function App(props) {
     return (
@@ -28,6 +29,7 @@ function App(props) {
                     )}
                 />
             </main>
+            <Footer />
         </div>
     );
 }
