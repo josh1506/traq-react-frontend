@@ -6,6 +6,8 @@
 
 .main-container {
     padding-top: 20px;
+    min-height: 91vh;
+    overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
