@@ -89,7 +89,7 @@ const animateButton = {
     },
     visible: {
         y: '5vh',
-        zIndex: 1,
+        zIndex: 0,
         opacity: 1,
         transition: { duration: 2, delay: 2.5 }
     },
