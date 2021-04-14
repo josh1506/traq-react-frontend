@@ -1,0 +1,35 @@
+.footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: #03DAC6 2px solid;
+    padding: 10px 0;
+    background-color: #121212;
+}
+
+.footer-text {
+    color: rgb(226, 226, 226);
+    font-size: 18px;
+}
+
+.footer-link {
+    text-decoration: none;
+    color: rgb(226, 226, 226);
+    font-size: 18px;
+}
+
+.footer-icon-container {
+    position: absolute;
+    right: 0;
+    padding-right: 20px;
+}
+
+.footer-icon {
+    margin: 5px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+}
+
+.footer-icon:hover {
+    color: #03DAC6;
+}
