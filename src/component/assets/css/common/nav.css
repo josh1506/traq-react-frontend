@@ -6,6 +6,7 @@
     background-color: #fff;
     padding-right: 10px;
     border-end-end-radius: 35px;
+    border-end-start-radius: 30px;
 }
 
 .nav-container {
@@ -17,6 +18,7 @@
     justify-content: flex-end;
     border-bottom: #B3C9FF 2px solid;
     background-color: #fff;
+    z-index: 1;
 }
 
 .nav-button {
@@ -26,4 +28,24 @@
     color: #fff;
     text-decoration: none;
     font-size: 15px;
+}
+
+/* Tablet */
+@media only screen and (max-width: 1025px) {
+    .nav-container {
+        width: 93vw;
+    }
+}
+
+@media only screen and (max-width: 770px) {
+    .nav-container {
+        width: 91vw;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: 415px) {
+    .nav-container {
+        width: 82vw;
+    }
 }
