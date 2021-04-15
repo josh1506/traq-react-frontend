@@ -13,3 +13,15 @@
 ::-webkit-scrollbar {
     width: 0;
 }
+
+@media only screen and (max-width: 1024px) {
+    .main-container {
+        min-height: 95vh;
+    }
+}
+
+@media only screen and (max-width: 769px) {
+    .main-container {
+        min-height: 94vh;
+    }
+}
