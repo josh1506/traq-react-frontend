@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { motion } from 'framer-motion'
+import { connect } from 'react-redux'
 
 import img_one from '../assets/img/11000.jpg'
 import logo from '../assets/img/Traq_Logo.png'
+import { userLogin } from '../app/auth'
 import '../assets/css/pages/login.css'
 
 
@@ -65,8 +67,12 @@ const animateFacebook = {
 
 
 function Login(props) {
-    const responseFacebook = (response) => {
-        console.log(response);
+    useEffect(() => {
+        if (props.auth) props.history.replace('/dashboard')
+    }, [props.auth])
+
+    const responseFacebook = (userData) => {
+        props.userLogin(userData)
     }
 
     return (
@@ -117,4 +123,8 @@ function Login(props) {
     );
 }
 
-export default Login;
+const mapStateToProps = ({ auth }) => {
+    return { auth }
+}
+
+export default connect(mapStateToProps, { userLogin })(Login);
