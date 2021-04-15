@@ -33,3 +33,14 @@
 .footer-icon:hover {
     color: #03DAC6;
 }
+
+@media only screen and (max-width: 415px) {
+    .footer-text {
+        font-size: 10px;
+    }
+
+    .footer-link {
+        text-decoration: none;
+        font-size: 10px;
+    }
+}
