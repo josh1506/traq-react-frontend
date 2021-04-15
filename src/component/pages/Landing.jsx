@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import img_one from '../assets/img/11000.jpg'
 import img_two from '../assets/img/9812.jpg'
 import '../assets/css/pages/landing.css'
+import { connect } from 'react-redux';
 
 const animateImageLeft = {
     hidden: {
@@ -138,9 +139,14 @@ function Landing(props) {
                         whileHover='onHover'
                         style={{ border: 'none', backgroundColor: 'rgba(0,0,0,0)' }}
                     >
-                        <Link to='/login' className='content-button'>
-                            Login/Signup for Free
-                        </Link>
+                        {props.auth ?
+                            <Link to='/dashboard' className='content-button'>
+                                Go to dashboard
+                            </Link> :
+                            <Link to='/login' className='content-button'>
+                                Login/Signup for Free
+                            </Link>
+                        }
                     </motion.button>
                 </div>
             </div>
@@ -168,4 +174,8 @@ function Landing(props) {
     );
 }
 
-export default Landing;
+const mapStateToProps = ({ auth }) => {
+    return { auth }
+}
+
+export default connect(mapStateToProps)(Landing);
