@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
@@ -7,6 +7,7 @@ import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area } from 'recharts'
 import CreateUrlModal from '../common/CreateUrlModal';
 import '../assets/css/pages/dashboard.css'
 import DeleteUrlModal from './../common/DeleteUrlModal';
+import { connect } from 'react-redux';
 
 const animateTableContainer = {
     hidden: { y: '10vh', opacity: 0 },
@@ -73,6 +74,10 @@ function Dashboard(props) {
             "amt": 2100
         }
     ]
+
+    useEffect(() => {
+        if (!props.auth) props.history.replace('/login')
+    }, [props.auth])
 
     return (
         <div className='dashboard-container'>
@@ -177,4 +182,8 @@ function Dashboard(props) {
     );
 }
 
-export default Dashboard;
+const mapStateToProps = ({ auth }) => {
+    return { auth }
+}
+
+export default connect(mapStateToProps)(Dashboard);
