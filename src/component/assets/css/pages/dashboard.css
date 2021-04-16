@@ -76,6 +76,14 @@
     color: mediumaquamarine;
 }
 
+.dashboard-status-list {
+    word-wrap: break-word;
+    height: 250px;
+    width: 210px;
+    margin-top: 23px;
+    overflow-y: scroll;
+}
+
 /* Tablet */
 @media only screen and (max-width: 1024px) {
     .dashboard-table-container {
