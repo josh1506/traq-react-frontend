@@ -54,6 +54,11 @@
     cursor: pointer;
 }
 
+.modal-error {
+    color: #ef233c;
+    font-size: 14px;
+}
+
 /* Tablet */
 @media only screen and (max-width: 1025px) {
     .modal-container {
