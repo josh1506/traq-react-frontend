@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'
 
+import route from '../route/traq'
 import '../assets/css/common/modal.css'
 
 const animateButton = {
@@ -57,7 +58,21 @@ const animateModalContainer = {
     },
 }
 
+const animateModalError = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 }
+}
+
 function DeleteUrlModal(props) {
+    const [error, setError] = useState(false)
+
+    const handleSubmit = async () => {
+        await route.delete(`url_tracker/url/${props.onSelectItem.id}`)
+            .then(() => props.onChangeShowModal(false))
+            .catch(() => setError(true))
+    }
+
     return (
         <AnimatePresence exitBeforeEnter>
             {props.showModal && <motion.div
@@ -75,6 +90,13 @@ function DeleteUrlModal(props) {
                         className='modal-container'
                     >
                         <motion.div>
+                            {error && <motion.p
+                                className='modal-error'
+                                variants={animateModalError}
+                                initial='hidden'
+                                animate='visible'
+                                exit='exit'
+                            >Something went wrong</motion.p>}
                             <p style={{ marginBottom: 40, marginTop: 20 }}>Are you sure you want to delete this?</p>
                         </motion.div>
                         <div className='modal-button-container'>
@@ -84,7 +106,10 @@ function DeleteUrlModal(props) {
                                 animate='visible'
                                 exit='exit'
                                 whileHover='onHover'
-                                onClick={() => props.onChangeShowModal(false)}>Cancel</motion.button>
+                                onClick={() => {
+                                    props.onChangeShowModal(false)
+                                    props.onChangeSelect({ link: "https://twitter.com", title: "Twitter", total_visitors: 0 })
+                                }}>Cancel</motion.button>
                             <motion.button
                                 variants={animateButton}
                                 initial='hidden'
@@ -92,7 +117,7 @@ function DeleteUrlModal(props) {
                                 exit='exit'
                                 whileHover='onHover'
                                 style={{ backgroundColor: '#ffa69e' }}
-                                onClick={() => console.log('click')}>Delete</motion.button>
+                                onClick={() => handleSubmit()}>Delete</motion.button>
                         </div>
                     </motion.div>
                 </div>
