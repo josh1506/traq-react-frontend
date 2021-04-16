@@ -102,7 +102,7 @@ function Login(props) {
                     </p>
                     <h3>Login/Signup with:</h3>
                 </motion.div>
-                <motion.button
+                <motion.div
                     variants={animateFacebook}
                     initial='hidden'
                     animate='visible'
@@ -117,7 +117,7 @@ function Login(props) {
                         cssClass="facebook-login-container"
                         textButton={<FontAwesomeIcon icon={faFacebookF} color='white' size='3x' className='facebook-button' />}
                     />
-                </motion.button>
+                </motion.div>
             </div>
         </div>
     );
