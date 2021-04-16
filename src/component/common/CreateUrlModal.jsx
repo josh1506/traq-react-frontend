@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'
 
+import route from '../route/traq'
 import '../assets/css/common/modal.css'
+import { connect } from 'react-redux';
 
 const animateButton = {
     hidden: {
@@ -71,7 +73,23 @@ const animateModalContainer = {
     },
 }
 
+const animateModalError = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 }
+}
+
+
 function CreateUrlModal(props) {
+    const [urlData, setUrlData] = useState({ title: '', link: '' })
+    const [error, setError] = useState({ title: [], link: [], data: {}, error: '', status: false })
+
+    const handleSubmit = async () => {
+        route.post('url_tracker/url', urlData, { headers: { Authorization: `Token ${props.auth}` } })
+            .then(() => props.onChangeShowModal(false))
+            .catch(data => setError(data.response.data))
+    }
+
     return (
         <AnimatePresence exitBeforeEnter>
             {props.showModal && <motion.div
@@ -93,10 +111,45 @@ function CreateUrlModal(props) {
                             animate='visible'
                             exit='exit'
                             action="" className='modal-form-container'>
+                            {error.error && <motion.p
+                                className='modal-error'
+                                variants={animateModalError}
+                                initial='hidden'
+                                animate='visible'
+                                exit='exit'
+                            >{error.error}</motion.p>}
                             <label htmlFor="title">Title</label>
-                            <input type="text" name="title" id="title" placeholder='Title' />
+                            {error.title && <motion.p
+                                className='modal-error'
+                                variants={animateModalError}
+                                initial='hidden'
+                                animate='visible'
+                                exit='exit'
+                            >{error.title[0]}</motion.p>}
+                            <input
+                                type="text"
+                                name="title"
+                                id="title"
+                                placeholder='Title'
+                                value={urlData.title}
+                                onChange={e => setUrlData({ ...urlData, title: e.target.value })}
+                            />
                             <label htmlFor="link">Link</label>
-                            <input type="text" name="link" id="link" placeholder='Link' />
+                            {error.link && <motion.p
+                                className='modal-error'
+                                variants={animateModalError}
+                                initial='hidden'
+                                animate='visible'
+                                exit='exit'
+                            >{error.link[0]}</motion.p>}
+                            <input
+                                type="text"
+                                name="link"
+                                id="link"
+                                placeholder='Link'
+                                value={urlData.link}
+                                onChange={e => setUrlData({ ...urlData, link: e.target.value })}
+                            />
                         </motion.form>
                         <div className='modal-button-container'>
                             <motion.button
@@ -106,14 +159,17 @@ function CreateUrlModal(props) {
                                 exit='exit'
                                 whileHover='onHover'
                                 style={{ backgroundColor: '#ffa69e' }}
-                                onClick={() => props.onChangeShowModal(false)}>Cancel</motion.button>
+                                onClick={() => {
+                                    setUrlData({ title: '', link: '' })
+                                    props.onChangeShowModal(false)
+                                }}>Cancel</motion.button>
                             <motion.button
                                 variants={animateButton}
                                 initial='hidden'
                                 animate='visible'
                                 exit='exit'
                                 whileHover='onHover'
-                                onClick={() => console.log('click')}>Create</motion.button>
+                                onClick={() => handleSubmit()}>Create</motion.button>
                         </div>
                     </motion.div>
                 </div>
@@ -122,4 +178,6 @@ function CreateUrlModal(props) {
     );
 }
 
-export default CreateUrlModal;
+const mapStateToProps = ({ auth }) => ({ auth })
+
+export default connect(mapStateToProps)(CreateUrlModal);
