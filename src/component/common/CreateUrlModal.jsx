@@ -86,7 +86,7 @@ function CreateUrlModal(props) {
 
     const handleSubmit = async () => {
         route.post('url_tracker/url', urlData, { headers: { Authorization: `Token ${props.auth}` } })
-            .then(() => props.onChangeShowModal(false))
+            .then(() => props.onChangeShowModal())
             .catch(data => setError(data.response.data))
     }
 
@@ -161,7 +161,7 @@ function CreateUrlModal(props) {
                                 style={{ backgroundColor: '#ffa69e' }}
                                 onClick={() => {
                                     setUrlData({ title: '', link: '' })
-                                    props.onChangeShowModal(false)
+                                    props.onChangeShowModal()
                                 }}>Cancel</motion.button>
                             <motion.button
                                 variants={animateButton}
