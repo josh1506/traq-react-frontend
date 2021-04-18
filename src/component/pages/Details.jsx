@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area } from 'recharts'
 
 import route from '../route/traq'
 import '../assets/css/pages/dashboard.css'
+import DeleteUrlModal from './../common/DeleteUrlModal';
+import { connect } from 'react-redux';
 
 const animateTableContainer = {
     hidden: { y: '10vh', opacity: 0 },
@@ -25,8 +29,8 @@ const animateChartList = {
 
 function Details(props) {
     var num = 0
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [error, setError] = useState(false)
-    const [urlList, setUrlList] = useState([])
     const [urlDetails, setUrlDetails] = useState({
         "title": "",
         "link": "",
@@ -60,21 +64,36 @@ function Details(props) {
         setGraphTitlte(graphTitleList)
     }
 
+    console.log(urlDetails)
+
+    const getData = async () => {
+        const user = props.auth || localStorage.getItem('auth_token')
+
+        const urlID = props.match.params.id
+        await route.get(`url_tracker/url/${urlID}`, { headers: { 'Authorization': `Token ${user}` } })
+            .then(({ data }) => {
+                setError(false)
+                setUrlDetails(data.data)
+                setGraphList(data.data.graph_list)
+                setGraphData(data.data.graph_list.date)
+                handleGraphTitle()
+            })
+            .catch(() => setError(true))
+    }
+
     useEffect(() => {
-        const getData = async () => {
-            const urlID = props.match.params.id
-            await route.get(`url_tracker/url/${urlID}`)
-                .then(({ data }) => {
-                    setError(false)
-                    setUrlDetails(data.data)
-                    setGraphList(data.data.graph_list)
-                    setGraphData(data.data.graph_list.date)
-                    handleGraphTitle()
-                })
-                .catch(() => setError(true))
-        }
+        const user = props.auth || localStorage.getItem('auth_token')
+        if (!user) props.history.replace('/')
+    }, [props.auth])
+
+    useEffect(() => {
         getData()
     }, [])
+
+    const handleCloseModal = () => {
+        setShowDeleteModal(false)
+        getData()
+    }
 
     if (error) return <div className='dashboard-container'><p>Not found</p></div>
 
@@ -93,24 +112,31 @@ function Details(props) {
                     <p>Link: {urlDetails.link}</p>
                     <p>Trach url: http://localhost:3000/url/{urlDetails.short_url}</p>
                     <p>Number of Visitors: {urlDetails.total_visitors}</p>
-                    <p>Last Visited: {urlDetails.viewer_list[0].date_viewed}</p>
+                    <p>Last Visited: {urlDetails.viewer_list.length > 0 ? urlDetails.viewer_list[0].date_viewed : 'No visited yet'}</p>
                 </motion.div>
                 <div className='dashboard-graph-container'>
                     <div className="dashboard-button">
-                        <button onClick={() => setGraphData(graphList.date)}>Date</button>
-                        <button onClick={() => setGraphData(graphList.month)}>Month</button>
-                        <button onClick={() => setGraphData(graphList.year)}>Year</button>
-                        <button>Delete</button>
+                        <button
+                            className='dashboard-button-filter'
+                            onClick={() => setGraphData(graphList.date)}>Date</button>
+                        <button
+                            className='dashboard-button-filter'
+                            onClick={() => setGraphData(graphList.month)}>Month</button>
+                        <button
+                            className='dashboard-button-filter'
+                            style={{ marginRight: 15 }}
+                            onClick={() => setGraphData(graphList.year)}>Year</button>
+                        <FontAwesomeIcon
+                            className='table-delete-icon'
+                            size='lg'
+                            icon={faTrashAlt}
+                            onClick={() => setShowDeleteModal(true)} />
                     </div>
                     <div className='dashboard-chart'>
                         <AreaChart width={730} height={250} data={graphData}
                             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#ff6b35" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#ff6b35" stopOpacity={0} />
-                                </linearGradient>
-                                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
                                     <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
                                 </linearGradient>
@@ -125,7 +151,7 @@ function Details(props) {
                                     key={`${title}${num}`}
                                     type="monotone"
                                     dataKey={title}
-                                    stroke="#ff6b35"
+                                    stroke="#8884d8"
                                     fillOpacity={1}
                                     fill="url(#colorUv)"
                                 />
@@ -134,39 +160,51 @@ function Details(props) {
                     </div>
                 </div>
             </div>}
-            <motion.input
-                variants={animateSearchInput}
-                initial='hidden'
-                animate='visible'
-                exit='exit'
-                type="text"
-                className='search-input'
-                placeholder='Input Date or Month'
+            {urlDetails.viewer_list.length > 0 ?
+                <React.Fragment>
+                    <motion.input
+                        variants={animateSearchInput}
+                        initial='hidden'
+                        animate='visible'
+                        exit='exit'
+                        type="text"
+                        className='search-input'
+                        placeholder='Input Date or Month'
+                    />
+                    <motion.div
+                        variants={animateTableContainer}
+                        initial='hidden'
+                        animate='visible'
+                        exit='exit'
+                        className='dashboard-table-container'
+                    >
+                        <table className='dashboard-table'>
+                            <thead>
+                                <tr>
+                                    <th>Date & Time Viewed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {urlDetails.viewer_list.map(viewer =>
+                                    <tr key={viewer.date_viewed}>
+                                        <td>{viewer.date_viewed}</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </motion.div>
+                </React.Fragment> : <p className='dashboard-table-empty'>No visitors yet</p>}
+            <DeleteUrlModal
+                showModal={showDeleteModal}
+                onChangeShowModal={handleCloseModal}
+                onSelectItem={urlDetails}
             />
-            <motion.div
-                variants={animateTableContainer}
-                initial='hidden'
-                animate='visible'
-                exit='exit'
-                className='dashboard-table-container'
-            >
-                <table className='dashboard-table'>
-                    <thead>
-                        <tr>
-                            <th>Date & Time Viewed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {urlDetails.viewer_list.map(viewer =>
-                            <tr key={viewer.date_viewed}>
-                                <td>{viewer.date_viewed}</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </motion.div>
         </div>
     );
 }
 
-export default Details;
+const mapStateToProps = ({ auth }) => {
+    return { auth }
+}
+
+export default connect(mapStateToProps)(Details);
