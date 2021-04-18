@@ -69,7 +69,9 @@ function DeleteUrlModal(props) {
 
     const handleSubmit = async () => {
         await route.delete(`url_tracker/url/${props.onSelectItem.id}`)
-            .then(() => props.onChangeShowModal(false))
+            .then(() => {
+                props.onChangeShowModal()
+            })
             .catch(() => setError(true))
     }
 
@@ -107,8 +109,8 @@ function DeleteUrlModal(props) {
                                 exit='exit'
                                 whileHover='onHover'
                                 onClick={() => {
-                                    props.onChangeShowModal(false)
-                                    props.onChangeSelect({ link: "https://twitter.com", title: "Twitter", total_visitors: 0 })
+                                    props.onChangeShowModal()
+                                    if (props.onChangeSelect) props.onChangeSelect({ link: "", title: "", total_visitors: 0 })
                                 }}>Cancel</motion.button>
                             <motion.button
                                 variants={animateButton}
