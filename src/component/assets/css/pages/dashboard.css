@@ -84,6 +84,53 @@
     overflow-y: scroll;
 }
 
+.dashboard-button-filter {
+    background-color: #aaaaaa;
+    border: none;
+    padding: 5px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+}
+
+.dashboard-button-filter:focus {
+    outline: none;
+}
+
+.dashboard-button-filter:hover {
+    background-color: #ddd;
+}
+
+.dashboard-button-delete {
+    background-color: #ef233c;
+}
+
+.dashboard-table-empty {
+    margin-top: 100px;
+}
+
+.url-link .tooltip-message {
+    visibility: hidden;
+    opacity: 0.5;
+    width: 100px;
+    background-color: #ABC4FF;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 2px 0;
+    font-size: 13px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    left: 290px;
+}
+
+.url-link:hover .tooltip-message {
+    visibility: visible;
+}
+
 /* Tablet */
 @media only screen and (max-width: 1024px) {
     .dashboard-table-container {
