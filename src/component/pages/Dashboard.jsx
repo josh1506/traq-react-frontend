@@ -9,6 +9,7 @@ import DeleteUrlModal from './../common/DeleteUrlModal';
 import route from '../route/traq'
 import '../assets/css/pages/dashboard.css'
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const animateTableContainer = {
     hidden: { y: '10vh', opacity: 0 },
@@ -28,7 +29,13 @@ const animateChartList = {
     exit: { opacity: 0 }
 }
 
-function Details(props) {
+const animateUrlCopy = {
+    visible: { opacity: 1, transition: { duration: 3 } },
+    onHover: { scale: 1.02, transition: { duration: 0.3 } },
+    onTap: { opacity: [0.1, 1], transition: { duration: 0.3 } }
+}
+
+function Dashboard(props) {
     var num = 0
     const [showCreateModal, setShowCreateModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -83,24 +90,35 @@ function Details(props) {
         setGraphTitlte(newGraphTitle)
     }
 
-    useEffect(() => {
+    const getData = async () => {
         const user = localStorage.getItem('auth_token')
 
-        if (!user) props.history.replace('login')
+        await route.get('url_tracker/url', { headers: { Authorization: `Token ${user}` } })
+            .then(({ data }) => {
+                console.log(data)
+                setError(false)
+                setUrlList(data.data)
+                setGraphList(data.graph_list)
+                setGraphData(data.graph_list.date)
+                handleGraphTitle()
+            })
+    }
 
-        const getData = async () => {
-            await route.get('url_tracker/url', { headers: { Authorization: `Token ${user}` } })
-                .then(({ data }) => {
-                    console.log(data)
-                    setError(false)
-                    setUrlList(data.data)
-                    setGraphList(data.graph_list)
-                    setGraphData(data.graph_list.date)
-                    handleGraphTitle()
-                })
-        }
+    useEffect(() => {
+        const user = props.auth || localStorage.getItem('auth_token')
+        if (!user) props.history.replace('/')
+    }, [props.auth])
+
+    useEffect(() => {
+        if (!localStorage.getItem('auth_token')) props.history.replace('login')
         getData()
     }, [])
+
+    const handleCloseModal = () => {
+        setShowCreateModal(false)
+        setShowDeleteModal(false)
+        getData()
+    }
 
     if (error) return <div className='dashboard-container'><p>Not found</p></div>
 
@@ -142,9 +160,9 @@ function Details(props) {
                 </motion.div>
                 <div className='dashboard-graph-container'>
                     <div className="dashboard-button">
-                        <button onClick={() => setGraphData(graphList.date)}>Date</button>
-                        <button onClick={() => setGraphData(graphList.month)}>Month</button>
-                        <button onClick={() => setGraphData(graphList.year)}>Year</button>
+                        <button className='dashboard-button-filter' onClick={() => setGraphData(graphList.date)}>Date</button>
+                        <button className='dashboard-button-filter' onClick={() => setGraphData(graphList.month)}>Month</button>
+                        <button className='dashboard-button-filter' onClick={() => setGraphData(graphList.year)}>Year</button>
                         <FontAwesomeIcon
                             icon={faPlusCircle}
                             size='lg'
@@ -183,69 +201,84 @@ function Details(props) {
                     </div>
                 </div>
             </div>
-            <motion.input
-                variants={animateSearchInput}
-                initial='hidden'
-                animate='visible'
-                exit='exit'
-                type="text"
-                className='search-input'
-                placeholder='Input Date or Month'
-            />
-            <motion.div
-                variants={animateTableContainer}
-                initial='hidden'
-                animate='visible'
-                exit='exit'
-                className='dashboard-table-container'
-            >
-                <table className='dashboard-table'>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Link</th>
-                            <th>Track Link</th>
-                            <th>Total Visitors</th>
-                            <th>Last Viewed</th>
-                            <th style={{ minWidth: '15px' }}></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {urlList.map(url => url.title &&
-                            <tr key={url.title}>
-                                <td>
-                                    <Link to={`/dashboard/${url.id}`}>
-                                        {url.title.substring(0, 8)}
-                                        {url.title.length > 8 ? '...' : ''}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <a href={url.link} target='_blank'>
-                                        Visit page
-                                        </a>
-                                </td>
-                                <td>http://localhost:3000/url/{url.short_url}</td>
-                                <td>{url.total_visitors}</td>
-                                <td>on going</td>
-                                <td>
-                                    <FontAwesomeIcon
-                                        className='table-delete-icon'
-                                        size='lg'
-                                        icon={faTrashAlt}
-                                        onClick={() => {
-                                            setSelectedUrl(url)
-                                            setShowDeleteModal(true)
-                                        }} />
-                                </td>
+            {urlList.length > 0 ? <React.Fragment>
+                <motion.input
+                    variants={animateSearchInput}
+                    initial='hidden'
+                    animate='visible'
+                    exit='exit'
+                    type="text"
+                    className='search-input'
+                    placeholder='Input Title'
+                />
+                <motion.div
+                    variants={animateTableContainer}
+                    initial='hidden'
+                    animate='visible'
+                    exit='exit'
+                    className='dashboard-table-container'
+                >
+                    <table className='dashboard-table'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Link</th>
+                                <th>Track Link</th>
+                                <th>Total Visitors</th>
+                                <th>Last Viewed</th>
+                                <th style={{ minWidth: '15px' }}></th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
-            </motion.div>
-            <CreateUrlModal showModal={showCreateModal} onChangeShowModal={setShowCreateModal} />
+                        </thead>
+                        <tbody>
+                            {urlList.map(url => url.title &&
+                                <tr key={url.title}>
+                                    <td>
+                                        <Link to={`/dashboard/${url.id}`}>
+                                            {url.title.substring(0, 8)}
+                                            {url.title.length > 8 ? '...' : ''}
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <a href={url.link} target='_blank'>
+                                            Visit page
+                                            </a>
+                                    </td>
+                                    <td>
+                                        <motion.p
+                                            variants={animateUrlCopy}
+                                            whileHover='onHover'
+                                            whileTap='onTap'
+                                            animate='visible'
+                                            className='url-link'
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() => navigator.clipboard.writeText(`http://localhost:3000/url/${url.short_url}`)}
+                                        >
+                                            http://localhost:3000/url/{url.short_url}
+                                            <span class="tooltip-message">Click to copy</span>
+                                        </motion.p>
+                                    </td>
+                                    <td style={{ textAlign: 'center' }}>{url.total_visitors}</td>
+                                    <td>on going</td>
+                                    <td>
+                                        <FontAwesomeIcon
+                                            className='table-delete-icon'
+                                            size='lg'
+                                            icon={faTrashAlt}
+                                            onClick={() => {
+                                                setSelectedUrl(url)
+                                                setShowDeleteModal(true)
+                                            }} />
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </motion.div>
+            </React.Fragment> : <p className='dashboard-table-empty'>Start create your tacker now.</p>}
+            <CreateUrlModal showModal={showCreateModal} onChangeShowModal={handleCloseModal} />
             <DeleteUrlModal
                 showModal={showDeleteModal}
-                onChangeShowModal={setShowDeleteModal}
+                onChangeShowModal={handleCloseModal}
                 onSelectItem={selectedUrl}
                 onChangeSelect={setSelectedUrl}
             />
@@ -253,4 +286,8 @@ function Details(props) {
     );
 }
 
-export default Details;
+const mapStateToProps = ({ auth }) => {
+    return { auth }
+}
+
+export default connect(mapStateToProps)(Dashboard);
