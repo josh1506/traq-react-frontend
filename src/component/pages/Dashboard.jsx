@@ -40,7 +40,7 @@ function Dashboard(props) {
     const [showCreateModal, setShowCreateModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [selectedUrl, setSelectedUrl] = useState({ link: "", title: "", total_visitors: 0 })
-
+    const [searchValue, setSearchValue] = useState('')
     const [error, setError] = useState(false)
     const [urlList, setUrlList] = useState([])
     const [urlDetails, setUrlDetails] = useState({
@@ -95,7 +95,6 @@ function Dashboard(props) {
 
         await route.get('url_tracker/url', { headers: { Authorization: `Token ${user}` } })
             .then(({ data }) => {
-                console.log(data)
                 setError(false)
                 setUrlList(data.data)
                 setGraphList(data.graph_list)
@@ -121,6 +120,8 @@ function Dashboard(props) {
     }
 
     if (error) return <div className='dashboard-container'><p>Not found</p></div>
+
+    const newData = searchValue ? urlList.filter(url => url.title.toLowerCase().includes(searchValue) ? url : '') : urlList
 
     return (
         <div className='dashboard-container'>
@@ -210,6 +211,8 @@ function Dashboard(props) {
                     type="text"
                     className='search-input'
                     placeholder='Input Title'
+                    value={searchValue}
+                    onChange={e => setSearchValue(e.target.value)}
                 />
                 <motion.div
                     variants={animateTableContainer}
@@ -230,7 +233,7 @@ function Dashboard(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {urlList.map(url => url.title &&
+                            {newData.map(url => url.title &&
                                 <tr key={url.title}>
                                     <td>
                                         <Link to={`/dashboard/${url.id}`}>
@@ -251,10 +254,10 @@ function Dashboard(props) {
                                             animate='visible'
                                             className='url-link'
                                             style={{ cursor: 'pointer' }}
-                                            onClick={() => navigator.clipboard.writeText(`http://localhost:3000/url/${url.short_url}`)}
+                                            onClick={() => navigator.clipboard.writeText(`https://josh1506.github.io/traq-react-frontend/url/${url.short_url}`)}
                                         >
-                                            http://localhost:3000/url/{url.short_url}
-                                            <span class="tooltip-message">Click to copy</span>
+                                            https://josh1506.github.io/traq-react-frontend/url/{url.short_url}
+                                            <span className="tooltip-message">Click to copy</span>
                                         </motion.p>
                                     </td>
                                     <td style={{ textAlign: 'center' }}>{url.total_visitors}</td>
