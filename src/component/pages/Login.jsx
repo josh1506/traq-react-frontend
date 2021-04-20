@@ -65,6 +65,11 @@ const animateFacebook = {
     }
 }
 
+const animateFreepikUrl = {
+    hidden: {opacity: 0},
+    visible : {opacity: 1, transition: {duration: 3, delay: 15}}
+}
+
 
 function Login(props) {
     useEffect(() => {
@@ -76,50 +81,63 @@ function Login(props) {
     }
 
     return (
-        <div className='login-page-container'>
-            <motion.img
-                variants={animateImageLeft}
-                initial='hidden'
-                animate='visible'
-                exit='exit'
-                src={img_one}
-                alt=""
-                className='login-img'
-            />
-            <div className='login-container'>
-                <motion.div
-                    variants={animateLogin}
-                    initial='hidden'
-                    animate='visible'
-                    exit='exit'
-                    className='login-container'
-                >
-
-                    <img src={logo} alt='Traq_Logo' />
-                    <h1>Welcome to Traq</h1>
-                    <p>
-                        Sign in now to assess and start tracking your audience.
-                    </p>
-                    <h3>Login/Signup with:</h3>
-                </motion.div>
-                <motion.div
-                    variants={animateFacebook}
-                    initial='hidden'
-                    animate='visible'
-                    exit='exit'
-                    whileHover='onHover'
-                    className='facebook-login-container'
-                >
-                    <FacebookLogin
-                        appId="199680755295170"
-                        fields="name,email,picture"
-                        callback={responseFacebook}
-                        cssClass="facebook-login-container"
-                        textButton={<FontAwesomeIcon icon={faFacebookF} color='white' size='3x' className='facebook-button' />}
+        <React.Fragment>
+            <div className='login-page-container'>
+                    <motion.img
+                        variants={animateImageLeft}
+                        initial='hidden'
+                        animate='visible'
+                        exit='exit'
+                        src={img_one}
+                        alt=""
+                        className='login-img'
                     />
-                </motion.div>
+                <div className='login-container'>
+                    <motion.div
+                        variants={animateLogin}
+                        initial='hidden'
+                        animate='visible'
+                        exit='exit'
+                        className='login-container'
+                    >
+                        <img src={logo} alt='Traq_Logo' />
+                        <h1>Welcome to Traq</h1>
+                        <p>
+                            Sign in now to assess and start tracking your audience.
+                        </p>
+                        <h3>Login/Signup with:</h3>
+                    </motion.div>
+                    <motion.div
+                        variants={animateFacebook}
+                        initial='hidden'
+                        animate='visible'
+                        exit='exit'
+                        whileHover='onHover'
+                        className='facebook-login-container'
+                    >
+                        <FacebookLogin
+                            appId="199680755295170"
+                            fields="name,email,picture"
+                            callback={responseFacebook}
+                            cssClass="facebook-login-container"
+                            textButton={<FontAwesomeIcon icon={faFacebookF} color='white' size='3x' className='facebook-button' />}
+                        />
+                    </motion.div>
+                </div>
             </div>
-        </div>
+            <motion.div
+            variants={animateFreepikUrl}
+            initial='hidden'
+            animate='visible'
+            className='freepik-url'
+            style={{justifyContent: 'flex-start'}}
+            >
+                <a
+                href='https://www.freepik.com/vectors/banner'
+                >Banner vector created by pch.vector - www.freepik.com
+                </a>
+            </motion.div>
+        </React.Fragment>
     );
 }
 
