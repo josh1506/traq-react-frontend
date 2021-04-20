@@ -104,6 +104,11 @@ const animateButton = {
     }
 }
 
+const animateFreepikUrl = {
+    hidden: {opacity: 0},
+    visible : {opacity: 1, transition: {duration: 3, delay: 15}}
+}
+
 function Landing(props) {
     return (
         <div>
@@ -166,10 +171,20 @@ function Landing(props) {
                         Measure the success of your marketing
                         campaigns by create your own tracking
                         URL which helps you track the number
-                        of visitors opened your link.
+                        of visitors who visited your link.
                     </motion.p>
                 </div>
             </div>
+            <motion.div
+            variants={animateFreepikUrl}
+            initial='hidden'
+            animate='visible'
+            className='freepik-url'>
+                <a
+                href='https://www.freepik.com/vectors/banner'
+                >Banner vector created by pch.vector - www.freepik.com
+                </a>
+            </motion.div>
         </div>
     );
 }
