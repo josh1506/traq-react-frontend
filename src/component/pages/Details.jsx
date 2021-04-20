@@ -31,6 +31,7 @@ function Details(props) {
     var num = 0
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [error, setError] = useState(false)
+    const [searchValue, setSearchValue] = useState('')
     const [urlDetails, setUrlDetails] = useState({
         "title": "",
         "link": "",
@@ -64,8 +65,6 @@ function Details(props) {
         setGraphTitlte(graphTitleList)
     }
 
-    console.log(urlDetails)
-
     const getData = async () => {
         const user = props.auth || localStorage.getItem('auth_token')
 
@@ -97,6 +96,8 @@ function Details(props) {
 
     if (error) return <div className='dashboard-container'><p>Not found</p></div>
 
+    const newData = urlDetails.viewer_list && searchValue ? urlDetails.viewer_list.filter(viewer => viewer.date_viewed.toLowerCase().includes(searchValue) ? viewer : '') : urlDetails.viewer_list
+
     return (
         <div className='dashboard-container'>
             {urlDetails.title && <div className='dashbaord-status-container'>
@@ -106,13 +107,33 @@ function Details(props) {
                     animate='visible'
                     exit='exit'
                     className='dashboard-status-list'
-                    style={{ fontSize: 15 }}
+                    style={{ fontSize: 15, height: 270 }}
                 >
-                    <p>Title: {urlDetails.title}</p>
-                    <p>Link: {urlDetails.link}</p>
-                    <p>Trach url: http://localhost:3000/url/{urlDetails.short_url}</p>
-                    <p>Number of Visitors: {urlDetails.total_visitors}</p>
-                    <p>Last Visited: {urlDetails.viewer_list.length > 0 ? urlDetails.viewer_list[0].date_viewed : 'No visited yet'}</p>
+                    <p>Title: 
+                        <p style={{color: '#8884d8'}}>
+                            {urlDetails.title}
+                        </p>
+                    </p>
+                    <p>Link: 
+                        <p style={{color: '#8884d8'}}>
+                            {urlDetails.link}
+                        </p>
+                    </p>
+                    <p>Trach url: 
+                        <p style={{color: '#8884d8'}}>
+                        https://josh1506.github.io/traq-react-frontend/url/{urlDetails.short_url}
+                        </p>
+                    </p>
+                    <p>Number of Visitors: 
+                        <p style={{color: '#8884d8'}}>
+                            {urlDetails.total_visitors}
+                        </p>
+                    </p>
+                    <p>Last Visited: 
+                        <p style={{color: '#8884d8'}}>
+                            {urlDetails.viewer_list.length > 0 ? urlDetails.viewer_list[0].date_viewed : 'No visited yet'}
+                        </p>
+                    </p>
                 </motion.div>
                 <div className='dashboard-graph-container'>
                     <div className="dashboard-button">
@@ -169,7 +190,9 @@ function Details(props) {
                         exit='exit'
                         type="text"
                         className='search-input'
-                        placeholder='Input Date or Month'
+                        placeholder='Input Date, Time, or Month'
+                        value={searchValue}
+                        onChange={e => setSearchValue(e.target.value)}
                     />
                     <motion.div
                         variants={animateTableContainer}
@@ -185,7 +208,7 @@ function Details(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {urlDetails.viewer_list.map(viewer =>
+                                {newData.map(viewer =>
                                     <tr key={viewer.date_viewed}>
                                         <td>{viewer.date_viewed}</td>
                                     </tr>
@@ -195,6 +218,7 @@ function Details(props) {
                     </motion.div>
                 </React.Fragment> : <p className='dashboard-table-empty'>No visitors yet</p>}
             <DeleteUrlModal
+                {...props}
                 showModal={showDeleteModal}
                 onChangeShowModal={handleCloseModal}
                 onSelectItem={urlDetails}
