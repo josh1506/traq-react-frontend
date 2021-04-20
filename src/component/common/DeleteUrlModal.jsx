@@ -71,6 +71,7 @@ function DeleteUrlModal(props) {
         await route.delete(`url_tracker/url/${props.onSelectItem.id}`)
             .then(() => {
                 props.onChangeShowModal()
+                if (props.history) props.history.replace('/dashboard')
             })
             .catch(() => setError(true))
     }
