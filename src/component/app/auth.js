@@ -7,12 +7,23 @@ const GET_CURRENT_USER = 'getCurrentUser'
 
 
 // Actions
-export const getCurrentUser = () => {
+export const getCurrentUser = () => async dispatch => {
     const auth_token = localStorage.getItem('auth_token')
-    return {
-        type: GET_CURRENT_USER,
-        payload: auth_token
-    }
+    if (auth_token) 
+    await route.post('auth/validate-token', {auth_token})
+    .catch(() => {
+        localStorage.removeItem('auth_token')
+        window.location.reload()
+        dispatch({
+            type: USER_LOGOUT,
+        })
+    })
+    .then(() => 
+        dispatch({
+            type: GET_CURRENT_USER,
+            payload: auth_token
+        })
+    )
 }
 
 export const userLogin = (userData) => async dispatch => {
