@@ -124,7 +124,7 @@
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-    left: 290px;
+    left: 90%;
 }
 
 .url-link:hover .tooltip-message {
@@ -143,6 +143,10 @@
 
     .search-input {
         width: 70%;
+    }
+
+    .url-link:hover .tooltip-message {
+        visibility: hidden;
     }
 }
 
@@ -164,6 +168,10 @@
         flex-direction: column-reverse;
     }
 
+    .url-link:hover .tooltip-message {
+        visibility: hidden;
+    }
+
 }
 
 /* Mobile */
@@ -180,5 +188,9 @@
         display: flex;
         align-self: center;
         justify-content: flex-end;
+    }
+
+    .url-link:hover .tooltip-message {
+        visibility: hidden;
     }
 }
