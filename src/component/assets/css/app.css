@@ -4,6 +4,33 @@
     font-family: 'RocknRoll One', sans-serif;
 }
 
+.freepik-url {
+    font-size: 8px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 3px;
+}
+
+.photo-content-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo-content-page img {
+    width: 80%;
+}
+
+.go-back-link-button {
+    text-decoration: none;
+    background-color: #ABC4FF;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
 .main-container {
     padding-top: 20px;
     min-height: 91vh;
