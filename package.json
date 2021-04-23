@@ -1,5 +1,4 @@
 {
-  "homepage": "https://josh1506.github.io/traq-react-frontend",
   "name": "traq-react-frontend",
   "version": "0.1.0",
   "private": true,
@@ -13,7 +12,6 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
     "framer-motion": "^4.1.3",
-    "gh-pages": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-facebook-login": "^4.1.1",
@@ -26,8 +24,6 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
