@@ -254,9 +254,9 @@ function Dashboard(props) {
                                             animate='visible'
                                             className='url-link'
                                             style={{ cursor: 'pointer' }}
-                                            onClick={() => navigator.clipboard.writeText(`https://josh1506.github.io/traq-react-frontend/url/${url.short_url}`)}
+                                            onClick={() => navigator.clipboard.writeText(`https://traq.vercel.app/url/${url.short_url}`)}
                                         >
-                                            https://josh1506.github.io/traq-react-frontend/url/{url.short_url}
+                                            https://traq.vercel.app/url/{url.short_url}
                                             <span className="tooltip-message">Click to copy</span>
                                         </motion.p>
                                     </td>

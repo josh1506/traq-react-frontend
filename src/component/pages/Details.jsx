@@ -156,7 +156,7 @@ function Details(props) {
                     </p>
                     <p>Trach url: 
                         <p style={{color: '#8884d8'}}>
-                        https://josh1506.github.io/traq-react-frontend/url/{urlDetails.short_url}
+                        https://traq.vercel.app/url/{urlDetails.short_url}
                         </p>
                     </p>
                     <p>Number of Visitors: 
