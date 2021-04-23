@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
@@ -25,6 +26,23 @@ const animateChartList = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { delay: 2, duration: 1 } },
     exit: { opacity: 0 }
+}
+
+const animateButton = {
+    hidden: {
+        opacity: 0
+    },
+    visible: {
+        opacity: 1,
+        transition: { duration: 2, delay: 2.5 }
+    },
+    exit: {
+        opacity: 0
+    },
+    onHover: {
+        scale: 1.03,
+        transition: { yoyo: Infinity }
+    }
 }
 
 function Details(props) {
@@ -101,6 +119,22 @@ function Details(props) {
     return (
         <div className='dashboard-container'>
             {urlDetails.title && <div className='dashbaord-status-container'>
+                <motion.button
+                    variants={animateButton}
+                    initial='hidden'
+                    animate='visible'
+                    exit='exit'
+                    whileHover='onHover'
+                    style={{ 
+                        border: 'none', 
+                        backgroundColor: 'rgba(0,0,0,0)', 
+                        position: 'absolute',
+                        top: 90,
+                        left: 100
+                    }}
+                >
+                    <Link to='/dashboard' className='back-button'>Go back</Link>
+                </motion.button>
                 <motion.div
                     variants={animateChartList}
                     initial='hidden'
@@ -109,6 +143,7 @@ function Details(props) {
                     className='dashboard-status-list'
                     style={{ fontSize: 15, height: 270 }}
                 >
+
                     <p>Title: 
                         <p style={{color: '#8884d8'}}>
                             {urlDetails.title}

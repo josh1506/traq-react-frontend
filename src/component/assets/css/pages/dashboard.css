@@ -131,6 +131,14 @@
     visibility: visible;
 }
 
+.back-button {
+    text-decoration: none;
+    color: #fff;
+    background-color: #ABC4FF;
+    padding: 6px 15px;
+    border-radius: 5px;
+}
+
 /* Tablet */
 @media only screen and (max-width: 1024px) {
     .dashboard-table-container {
