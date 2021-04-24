@@ -35,6 +35,12 @@ const animateUrlCopy = {
     onTap: { opacity: [0.1, 1], transition: { duration: 0.3 } }
 }
 
+const animateButton = {
+    hidden: {opacity: 0, backgroundColor:'#ABC4FF', color: 'white'},
+    visible: {opacity: 1, backgroundColor:'#ABC4FF', color: 'white', transition: {delay: 2.5, duration: 1}},
+    onHover: { scale: 1.2},
+}
+
 function Dashboard(props) {
     var num = 0
     const [showCreateModal, setShowCreateModal] = useState(false)
@@ -43,6 +49,7 @@ function Dashboard(props) {
     const [searchValue, setSearchValue] = useState('')
     const [error, setError] = useState(false)
     const [urlList, setUrlList] = useState([])
+    const [showGraph, setShowGraph] = useState(false)
     const [urlDetails, setUrlDetails] = useState({
         "title": "",
         "link": "",
@@ -58,13 +65,11 @@ function Dashboard(props) {
             "name": "Jan 1",
             "YouTube": 32,
             "Facebook": 23,
-            "amt": 2400
         },
         {
             "name": "Jan 2",
             "YouTube": 12,
             "Facebook": 13,
-            "amt": 2210
         },
     ])
     const handleGraphTitle = () => {
@@ -172,7 +177,19 @@ function Dashboard(props) {
                         />
                     </div>
                     <div className='dashboard-chart'>
-                        <AreaChart width={730} height={250} data={graphData}
+                    {!showGraph && <div style={{display:'flex',justifyContent: 'center',marginTop: 50, width: '100vh'}}>
+                        <motion.button 
+                        variants={animateButton}
+                        initial='hidden'
+                        animate='visible'
+                        className='dashboard-button-filter' 
+                        whileHover='onHover'
+                        onClick={() => {
+                            getData()
+                            setShowGraph(true)
+                        }}>Show Graph</motion.button>
+                    </div>}
+                        {showGraph && <AreaChart width={730} height={250} data={graphData}
                             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <defs>
                                 {graphTitle.map(graph => {
@@ -198,7 +215,7 @@ function Dashboard(props) {
                                     fill={`url(#${graph.title})`}
                                 />
                             })}
-                        </AreaChart>
+                        </AreaChart>}
                     </div>
                 </div>
             </div>

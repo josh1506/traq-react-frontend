@@ -45,11 +45,18 @@ const animateButton = {
     }
 }
 
+const animateButtonGraph = {
+    hidden: {opacity: 0, backgroundColor:'#ABC4FF', color: 'white'},
+    visible: {opacity: 1, backgroundColor:'#ABC4FF', color: 'white', transition: {delay: 2.5, duration: 1}},
+    onHover: { scale: 1.2},
+}
+
 function Details(props) {
     var num = 0
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [error, setError] = useState(false)
     const [searchValue, setSearchValue] = useState('')
+    const [showGraph, setShowGraph] = useState(false)
     const [urlDetails, setUrlDetails] = useState({
         "title": "",
         "link": "",
@@ -189,7 +196,19 @@ function Details(props) {
                             onClick={() => setShowDeleteModal(true)} />
                     </div>
                     <div className='dashboard-chart'>
-                        <AreaChart width={730} height={250} data={graphData}
+                        {!showGraph && <div style={{display:'flex',justifyContent: 'center',marginTop: 50, width: '100vh'}}>
+                            <motion.button 
+                            variants={animateButtonGraph}
+                            initial='hidden'
+                            animate='visible'
+                            className='dashboard-button-filter' 
+                            whileHover='onHover'
+                            onClick={() => {
+                                getData()
+                                setShowGraph(true)
+                            }}>Show Graph</motion.button>
+                        </div>}
+                        {showGraph && <AreaChart width={730} height={250} data={graphData}
                             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -212,7 +231,7 @@ function Details(props) {
                                     fill="url(#colorUv)"
                                 />
                             })}
-                        </AreaChart>
+                        </AreaChart>}
                     </div>
                 </div>
             </div>}
