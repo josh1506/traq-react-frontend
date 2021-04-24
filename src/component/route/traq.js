@@ -3,7 +3,7 @@ import axios from 'axios'
 const userToken = localStorage.getItem('auth_token')
 
 export default axios.create({
-    baseURL: 'http://127.0.0.1:8000/',
+    baseURL: 'https://traq-django-backend.herokuapp.com/',
     headers: {
         'Authorization' : `Token ${userToken}`
     }
