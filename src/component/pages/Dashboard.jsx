@@ -77,14 +77,14 @@ function Dashboard(props) {
         var colors = [
             "#8884d8",
             "#82ca9d",
-            "#e63946",
-            "#e56b6f",
-            "#555b6e",
-            "#e9c46a",
-            "#c1121f",
-            "#5a189a",
-            "#585123",
-            "#06d6a0",
+            "#ff595e",
+            "#ffca3a",
+            "#8ac926",
+            "#1982c4",
+            "#6a4c93",
+            "#f191ac",
+            "#c8b6ff",
+            "#93e1d8",
         ];
 
         const titleList = graphData.map(data => Object.keys(data))
